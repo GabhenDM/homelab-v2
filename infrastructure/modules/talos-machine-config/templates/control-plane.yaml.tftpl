@@ -1,0 +1,27 @@
+machine:
+  network:
+    interfaces:
+      - deviceSelector:
+          hardwareAddr: ${mac_address}
+        addresses:
+          - ${ip}/${subnet_mask}
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+        dhcp: false
+%{ if vip != null }
+        vip:
+          ip: ${vip}
+%{ endif }
+
+cluster:
+  allowSchedulingOnControlPlanes: true
+  apiServer:
+    ${indent(4, api_server)}
+  discovery:
+    enabled: true
+    registries:
+      service:
+        disabled: false
+  extraManifests: ${extra_manifests}
+  inlineManifests: ${inline_manifests}

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:GabhenDM/homelab-v2.git
+    path: k8s/infra/metallb
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system     # or wherever you install it
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

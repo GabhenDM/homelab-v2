@@ -43,3 +43,5 @@ inventory.yml
 .terraform/
 
 collections/
+
+infrastructure/output/
