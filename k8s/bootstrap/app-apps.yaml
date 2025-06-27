@@ -1,18 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-self
+  name: app-apps
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: git@github.com:GabhenDM/homelab-v2.git
-    path: k8s/infra/argocd
+    path: k8s/apps/applications
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:
-      prune: true       # remove resources no longer in Git
-      selfHeal: true    # revert manual drifts
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

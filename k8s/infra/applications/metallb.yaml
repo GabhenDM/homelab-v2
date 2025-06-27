@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - repoURL: 'https://metallb.github.io/metallb'
+    chart: metallb
+    targetRevision: 0.13.12
+    helm:
+      valueFiles:
+      - $values/k8s/infra/helm/metallb/values.yaml
+  - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
+    targetRevision: main
+    ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
