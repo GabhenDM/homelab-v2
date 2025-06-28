@@ -17,6 +17,9 @@ spec:
   - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
     targetRevision: main
     ref: values
+  - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
+    targetRevision: main
+    path: k8s/infra/manifests/metallb
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
