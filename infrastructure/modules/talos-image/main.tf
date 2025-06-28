@@ -13,7 +13,7 @@ resource "proxmox_virtual_environment_download_file" "current_release_img" {
   url                     = format(local.image_factory_url_template, var.image.schematic_id, var.image.version, var.image.platform, var.image.arch)
   decompression_algorithm = "gz"
   overwrite               = false
-  overwrite_unmanaged = true
+  overwrite_unmanaged     = true
   lifecycle {
     ignore_changes = [size, ]
   }
@@ -28,7 +28,7 @@ resource "proxmox_virtual_environment_download_file" "update_release_img" {
   url                     = format(local.image_factory_url_template, coalesce(var.image.update_schematic_id, var.image.schematic_id), var.image.update_version, var.image.platform, var.image.arch)
   decompression_algorithm = "gz"
   overwrite               = false
-  overwrite_unmanaged = true
+  overwrite_unmanaged     = true
   lifecycle {
     ignore_changes = [size, ]
   }

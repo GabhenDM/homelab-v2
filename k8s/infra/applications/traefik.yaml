@@ -1,28 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb
+  name: traefik
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-  - repoURL: 'https://metallb.github.io/metallb'
-    chart: metallb
-    targetRevision: 0.14.9
+  - repoURL: 'https://helm.traefik.io/traefik'
+    chart: traefik
+    targetRevision: "v25.0.0" # Will be updated by the user if needed
     helm:
-      parameters:
-      - name: crds.enabled
-        value: "true"
-      - name: speaker.frr.enabled
-        value: "false"
+      valueFiles:
+      - $values/k8s/infra/helm/traefik/values.yaml
   - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
     targetRevision: main
-    path: k8s/infra/manifests/metallb
+    ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: metallb-system
+    namespace: traefik
   syncPolicy:
     automated:
       prune: true

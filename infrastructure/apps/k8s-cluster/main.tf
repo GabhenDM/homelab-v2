@@ -86,7 +86,7 @@ module "cluster_config" {
   client_certificate     = base64decode(module.talos_machine_config.kubernetes_client_certificate)
   client_key             = base64decode(module.talos_machine_config.kubernetes_client_key)
   cluster_ca_certificate = base64decode(module.talos_machine_config.cluster_ca_certificate)
-  k8s_host = module.talos_machine_config.kubernetes_host
+  k8s_host               = module.talos_machine_config.kubernetes_host
 
 }
 
