@@ -15,28 +15,28 @@ data "talos_client_configuration" "this" {
   endpoints            = [for k, v in var.k8s_nodes : v.ip if v.machine_type == "controlplane"]
 }
 
-resource "terraform_data" "cilium_bootstrap_inline_manifests" {
-  input = [
-    {
-      name     = "cilium-bootstrap"
-      contents = file("${path.root}/${var.cluster.cilium.bootstrap_manifest_path}")
-    },
-    {
-      name = "cilium-values"
-      contents = yamlencode({
-        apiVersion = "v1"
-        kind       = "ConfigMap"
-        metadata = {
-          name      = "cilium-values"
-          namespace = "kube-system"
-        }
-        data = {
-          "values.yaml" = file("${path.root}/${var.cluster.cilium.values_file_path}")
-        }
-      })
-    }
-  ]
-}
+# resource "terraform_data" "cilium_bootstrap_inline_manifests" {
+#   input = [
+#     {
+#       name     = "cilium-bootstrap"
+#       contents = file("${path.root}/${var.cluster.cilium.bootstrap_manifest_path}")
+#     },
+#     {
+#       name = "cilium-values"
+#       contents = yamlencode({
+#         apiVersion = "v1"
+#         kind       = "ConfigMap"
+#         metadata = {
+#           name      = "cilium-values"
+#           namespace = "kube-system"
+#         }
+#         data = {
+#           "values.yaml" = file("${path.root}/${var.cluster.cilium.values_file_path}")
+#         }
+#       })
+#     }
+#   ]
+# }
 
 data "talos_machine_configuration" "this" {
   for_each         = var.k8s_nodes
