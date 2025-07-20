@@ -17,6 +17,15 @@ spec:
         value: "/var/longhorn"
       - name: preUpgradeChecker.jobEnabled
         value: "false"
+      - name: ingress.enabled
+        value: "true"
+      - name: ingress.ingressClassName
+        value: "traefik"
+      - name: ingress.host
+        value: "longhorn.internal.gabhendm.com"
+      - name: ingress.path
+        value: "/"
+      skipCrds: false
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
