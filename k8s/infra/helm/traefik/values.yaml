@@ -13,5 +13,5 @@ providers:
     enabled: true
 service:
   annotations:
-    metallb.universe.tf/address-pool: "private-pool"
-    metallb.universe.tf/loadBalancerIPs: "10.0.10.64"
+    metallb.io/address-pool: "pool"
+    metallb.io/loadBalancerIPs: "10.0.10.125"
