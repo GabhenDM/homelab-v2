@@ -1,40 +1,40 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: longhorn
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  sources:
-  - repoURL: 'https://charts.longhorn.io'
-    chart: longhorn
-    targetRevision: "1.6.0"
-    helm:
-      parameters:
-      - name: defaultSettings.defaultDataPath
-        value: "/var/longhorn"
-      - name: preUpgradeChecker.jobEnabled
-        value: "false"
-      - name: ingress.enabled
-        value: "true"
-      - name: ingress.ingressClassName
-        value: "traefik"
-      - name: ingress.host
-        value: "longhorn.internal.gabhendm.com"
-      - name: ingress.path
-        value: "/"
-      skipCrds: false
-  - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
-    targetRevision: main
-    path: k8s/infra/manifests/longhorn
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: longhorn-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: longhorn
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   sources:
+#   - repoURL: 'https://charts.longhorn.io'
+#     chart: longhorn
+#     targetRevision: "1.6.0"
+#     helm:
+#       parameters:
+#       - name: defaultSettings.defaultDataPath
+#         value: "/var/longhorn"
+#       - name: preUpgradeChecker.jobEnabled
+#         value: "false"
+#       - name: ingress.enabled
+#         value: "true"
+#       - name: ingress.ingressClassName
+#         value: "traefik"
+#       - name: ingress.host
+#         value: "longhorn.internal.gabhendm.com"
+#       - name: ingress.path
+#         value: "/"
+#       skipCrds: false
+#   - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
+#     targetRevision: main
+#     path: k8s/infra/manifests/longhorn
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: longhorn-system
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
