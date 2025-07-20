@@ -26,7 +26,7 @@ module "control_plane" {
   datastore_id    = "local-lvm"
   image_file_name = each.value.update ? format(local.image_name_template, coalesce(var.image.update_schematic_id, var.image.schematic_id), coalesce(var.image.update_version, var.image.version), var.image.arch) : format(local.image_name_template, var.image.schematic_id, var.image.version, var.image.arch)
   igpu            = each.value.igpu
-  gateway         = "192.168.1.1" // TODO: avoid hardcoding gateway
+  gateway         = "10.0.0.1" // TODO: avoid hardcoding gateway
   subnet_mask     = "24"
   dns             = ["8.8.8.8", "8.8.4.4"] // TODO: avoid hardcoding DNS
 
@@ -53,7 +53,7 @@ module "workers" {
   datastore_id    = "local-lvm"
   image_file_name = each.value.update ? format(local.image_name_template, coalesce(var.image.update_schematic_id, var.image.schematic_id), coalesce(var.image.update_version, var.image.version), var.image.arch) : format(local.image_name_template, var.image.schematic_id, var.image.version, var.image.arch)
   igpu            = each.value.igpu
-  gateway         = "192.168.1.1"
+  gateway         = "10.0.0.1"
   subnet_mask     = "24"
   dns             = ["8.8.8.8", "8.8.4.4"]
 
