@@ -1,40 +1,75 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: longhorn
-#   namespace: argocd
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-# spec:
-#   project: default
-#   sources:
-#   - repoURL: 'https://charts.longhorn.io'
-#     chart: longhorn
-#     targetRevision: "1.6.0"
-#     helm:
-#       parameters:
-#       - name: defaultSettings.defaultDataPath
-#         value: "/var/longhorn"
-#       - name: preUpgradeChecker.jobEnabled
-#         value: "false"
-#       - name: ingress.enabled
-#         value: "true"
-#       - name: ingress.ingressClassName
-#         value: "traefik"
-#       - name: ingress.host
-#         value: "longhorn.internal.gabhendm.com"
-#       - name: ingress.path
-#         value: "/"
-#       skipCrds: false
-#   - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
-#     targetRevision: main
-#     path: k8s/infra/manifests/longhorn
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: longhorn-system
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#       - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - repoURL: 'https://charts.longhorn.io'
+    chart: longhorn
+    targetRevision: "1.6.0"
+    helm:
+      parameters:
+      - name: defaultSettings.defaultDataPath
+        value: "/var/longhorn"
+      - name: preUpgradeChecker.jobEnabled
+        value: "false"
+      - name: ingress.enabled
+        value: "true"
+      - name: ingress.ingressClassName
+        value: "traefik"
+      - name: ingress.host
+        value: "longhorn.internal.gabhendm.com"
+      - name: ingress.path
+        value: "/"
+      # Disable replication for homelab (no HA needed)
+      - name: defaultSettings.defaultReplicaCount
+        value: "1"
+      # Reduce instance manager CPU usage
+      - name: defaultSettings.guaranteedInstanceManagerCPU
+        value: "5"
+      # Reduce concurrent rebuild limit to save CPU
+      - name: defaultSettings.concurrentReplicaRebuildPerNodeLimit
+        value: "1"
+      # Reduce concurrent backup restore limit
+      - name: defaultSettings.concurrentVolumeBackupRestorePerNodeLimit
+        value: "1"
+      # Disable auto salvage to reduce background CPU usage
+      - name: defaultSettings.autoSalvage
+        value: "false"
+      # Reduce resource requirements for instance managers
+      - name: longhornManager.nodeSelector
+        value: ""
+      - name: longhornDriver.nodeSelector
+        value: ""
+      # Set resource limits for longhorn components
+      - name: resources.limits.cpu
+        value: "200m"
+      - name: resources.limits.memory
+        value: "512Mi"
+      - name: resources.requests.cpu
+        value: "100m"
+      - name: resources.requests.memory
+        value: "256Mi"
+      # Reduce engine image concurrent limit
+      - name: defaultSettings.concurrentAutomaticEngineUpgradePerNodeLimit
+        value: "1"
+      # Disable system managed components pod security policy
+      - name: enablePSP
+        value: "false"
+      skipCrds: false
+  - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
+    targetRevision: main
+    path: k8s/infra/manifests/longhorn
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
