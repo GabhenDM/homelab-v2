@@ -26,6 +26,9 @@ spec:
       - name: ingress.path
         value: "/"
       skipCrds: false
+  - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
+    targetRevision: main
+    path: k8s/infra/manifests/longhorn
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
