@@ -42,7 +42,7 @@ talos_cluster_config = {
   gateway = "10.0.0.1"
   # talos_machine_config_version = "v1.9.2"
   proxmox_cluster    = "anton"
-  kubernetes_version = "v1.33.1" # renovate: github-releases=kubernetes/kubernetes
+  kubernetes_version = "v1.33.3" # renovate: github-releases=kubernetes/kubernetes
   cilium = {
     bootstrap_manifest_path = "modules/talos-machine-config/manifests/cilium-install.yaml"
     values_file_path        = "../k8s/infra/network/values.yaml"
@@ -56,6 +56,6 @@ talos_cluster_config = {
 talos_image = {
   version        = "v1.10.4"
   update_version = "v1.10.4"
-  schematic_id   = "95d432d6bb450a67e801a6ae77c96a67e38820b62ba4159ae7e997e1695207f7"
+  schematic_id   = "62d0931f10c2d9734427318cc15c4fd6a0317866434e53f1bcbecab204bfc688"
   # update_schematic_id = "talos-v1.9.3"
 }
