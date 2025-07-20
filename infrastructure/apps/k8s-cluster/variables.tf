@@ -25,6 +25,7 @@ variable "k8s_nodes" {
       host_node     = string
       machine_type  = string
       ip            = string
+      secondary_ip  = string
       dns           = optional(list(string))
       mac_address   = string
       vm_id         = number

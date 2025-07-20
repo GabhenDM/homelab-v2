@@ -29,10 +29,15 @@ module "control_plane" {
   gateway         = "10.0.0.1" // TODO: avoid hardcoding gateway
   subnet_mask     = "24"
   dns             = ["8.8.8.8", "8.8.4.4"] // TODO: avoid hardcoding DNS
+  secondary_interface_enabled = true
+  secondary_vlan_id = 4
+  secondary_subnet_mask = 24
+  secondary_ip = each.value.secondary_ip
+  secondary_gateway = "10.0.10.1"
 
 
   tags       = ["kubernetes", "controlplane"]
-  ssh_keys   = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEBaIwmXjnVCI651O4wwlH2B1fPYpEL3G/Q29ZxwcD9J gabhendm@anton"] // TODO: avoid hardcodding ssh_keys
+  ssh_keys   = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEBaIwmXjnVCI651O4wwlH2B1fPYpEL3G/Q29ZxwcD9J gabhendm@anton"] // TODO: avoid hardcoding ssh_keys
   depends_on = [module.talos_image]
 }
 
@@ -56,6 +61,11 @@ module "workers" {
   gateway         = "10.0.0.1"
   subnet_mask     = "24"
   dns             = ["8.8.8.8", "8.8.4.4"]
+  secondary_interface_enabled = true
+  secondary_vlan_id = 4
+  secondary_subnet_mask = 24
+  secondary_ip = each.value.secondary_ip
+  secondary_gateway = "10.0.10.1"
 
 
   tags       = ["kubernetes", "controlplane"]

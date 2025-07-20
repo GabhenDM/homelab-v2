@@ -25,6 +25,10 @@ variable "ip" {
   description = "VM IP address"
   type        = string
 }
+variable "secondary_ip" {
+  description = "VM IP address"
+  type        = string
+}
 
 variable "mac_address" {
   description = "VM MAC address"
@@ -67,6 +71,11 @@ variable "gateway" {
   description = "Network Gateway address"
   type        = string
 }
+
+variable "secondary_gateway" {
+  description = "Secondary Network Gateway address"
+  type        = string
+}
 variable "name" {
   description = "VM name"
   type        = string
@@ -92,4 +101,21 @@ variable "subnet_mask" {
   description = "Subnet mask for the VM's IP address"
   type        = string
   default     = "24"
+}
+
+variable "secondary_subnet_mask" {
+  description = "Secondary Subnet mask for the VM's IP address"
+  type        = string
+  default     = "24"
+}
+variable "secondary_vlan_id" {
+  description = "Secondary VLAN ID for the VM"
+  type        = number
+  default     = 0
+}
+
+variable "secondary_interface_enabled" {
+  description = "Enable secondary network interface"
+  type        = bool
+  default     = false
 }

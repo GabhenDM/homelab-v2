@@ -17,6 +17,10 @@ spec:
         value: "true"
       - name: speaker.frr.enabled
         value: "false"
+      - name: speaker.tolerations[0].key
+        value: "node-role.kubernetes.io/control-plane"
+      - name: speaker.tolerations[0].effect
+        value: "NoSchedule"
   - repoURL: 'git@github.com:GabhenDM/homelab-v2.git'
     targetRevision: main
     path: k8s/infra/manifests/metallb

@@ -33,6 +33,14 @@ resource "proxmox_virtual_environment_vm" "this" {
     mac_address = var.mac_address
   }
 
+  dynamic "network_device" {
+    for_each = var.secondary_interface_enabled ? [1] : []
+    content {
+      bridge  = "vmbr0"
+      vlan_id = var.secondary_vlan_id
+    }
+  }
+
   disk {
     datastore_id = var.datastore_id
     interface    = "scsi0"
@@ -66,6 +74,15 @@ resource "proxmox_virtual_environment_vm" "this" {
       ipv4 {
         address = "${var.ip}/${var.subnet_mask}"
         gateway = var.gateway
+      }
+    }
+    dynamic "ip_config" {
+      for_each = var.secondary_interface_enabled != null ? [1] : []
+      content {
+      ipv4 {
+        address = "${var.secondary_ip}/${var.secondary_subnet_mask}"
+        gateway = var.secondary_gateway
+      }
       }
     }
     user_account {
